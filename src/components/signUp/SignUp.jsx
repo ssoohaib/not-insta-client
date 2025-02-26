@@ -1,10 +1,12 @@
 import { StyleSheet, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Button1, Divider, Form, H1, Paragraph } from '../../components'
 import useThemeStore from '../../stores/useThemeStore';
 
-export default function Signup({schema, setState}) {
+export default function Signup({schema, setState, onOAuth, onSubmit}) {
     const {theme}=useThemeStore();
+    const [oAuthState, setOAuthState]=useState(false);
+    const [signUpState, setSignUpState]=useState(false);
     const styles = createStyles(theme);
 
     const handleStateChange=()=>{
@@ -19,10 +21,17 @@ export default function Signup({schema, setState}) {
             title='Sign up with google' 
             customStyles={{marginBottom:16, backgroundColor:theme.white}}
             titleStyles={{color:theme.black}}
+            onPress={onOAuth}
+            state={oAuthState}
         />
         <Divider customStyles={{marginBottom:16}} title={'or'} />
         <Form schema={schema} />
-        <Button1 title='Sign in' customStyles={{backgroundColor:theme.textColor2}} />
+        <Button1 
+          title='Sign in' 
+          customStyles={{backgroundColor:theme.textColor2}}
+          state={signUpState}
+          onPress={onSubmit}
+        />
         <View style={{alignItems:'center', flexDirection:'row', justifyContent:'center', marginTop:12}}>
             <Paragraph customStyles={{fontSize:12}}>Don't have an account?</Paragraph>
             <Button1 

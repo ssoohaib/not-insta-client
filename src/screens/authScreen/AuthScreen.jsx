@@ -1,11 +1,13 @@
-import { View, StyleSheet, ScrollView, Switch } from 'react-native'
-import React, { useState } from 'react'
+import { View, StyleSheet, ScrollView, Switch, Alert } from 'react-native'
+import React, { use, useEffect, useState } from 'react'
 import { Logo, SignIn, SignUp } from '../../components'
 import useThemeStore from '../../stores/useThemeStore'
+import { emailValidator, passwordValidator } from '../../utils';
 
 export default function AuthScreen() {
   const {theme, toggleTheme}=useThemeStore();
   const [state, setState]=useState('sign-in');
+  const styles = createStyles(theme);
   const [signInData, setSignInData]=useState({
     email:'',
     password:'',
@@ -14,7 +16,6 @@ export default function AuthScreen() {
     email:'',
     password:'',
   });
-  const styles = createStyles(theme);
 
   const signInSchema=[
     {
@@ -49,16 +50,53 @@ export default function AuthScreen() {
       onChangeText:(text)=>setSignUpData({...signUpData, password:text})
     }
   ]
+
+  const handleSignIn=()=>{
+    const emailError=emailValidator(signInData.email);
+    const passwordError=signInData.password.length<8;
+    if(!emailError || passwordError){
+      Alert.alert('Error', 'Invalid email or password');
+      return;
+    } 
+  }
+
+  const handleSignUp=()=>{
+    const emailError=emailValidator(signUpData.email);
+    const passwordError=passwordValidator(signUpData.password);
+    if(!emailError || !passwordError){
+      Alert.alert('Error', 'Invalid email or password');
+      return;
+    }
+  }
+  
+  const handleOAuthSignIn=()=>{
+
+  }
+
+  const handleOAuthSignUp=()=>{
+
+  }
+
+  useEffect(()=>{
+    console.log(signInData);
+  },[signInData])
+
+  useEffect(()=>{
+    console.log(signUpData);
+  }
+  ,[signUpData])
+
+
   
   return (
     <ScrollView automaticallyAdjustKeyboardInsets={true} contentContainerStyle={styles.container}>
       <View style={styles.upper}>
         <Logo />
       </View>
-        {/* <Switch onValueChange={toggleTheme} /> */}
+        <Switch onValueChange={toggleTheme} />
       <View style={styles.lower}>
-        {state === 'sign-in' && <SignIn setState={setState} schema={signInSchema} />}
-        {state === 'sign-up' && <SignUp setState={setState} schema={signUpSchema} />}
+        {state === 'sign-in' && <SignIn setState={setState} schema={signInSchema} onOAuth={handleOAuthSignIn} onSubmit={handleSignIn} />}
+        {state === 'sign-up' && <SignUp setState={setState} schema={signUpSchema}  onOAuth={handleOAuthSignUp} onSubmit={handleSignUp} />}
       </View>
     </ScrollView>
   )

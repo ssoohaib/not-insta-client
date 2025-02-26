@@ -15,7 +15,7 @@ export default function CustomTextInput({type, tag, placeholder, value, onChange
             value={value}
             placeholder={placeholder}
             secureTextEntry={type==='password'}
-            placeholderTextColor={theme.textColor1}
+            placeholderTextColor={theme.white2}
         />
     </View>
   )
@@ -24,7 +24,7 @@ export default function CustomTextInput({type, tag, placeholder, value, onChange
 const createStyles=(theme)=>StyleSheet.create({
     container:{
         borderWidth:0.5,
-        borderColor:'#96959a',
+        borderColor:theme.white2,
         borderRadius:8,
         color:theme.textColor1,
         fontSize:16,

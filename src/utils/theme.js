@@ -4,6 +4,7 @@ const LIGHT_THEME={
     textColor1:'#000000',
     textColor2:'#C1294C',
     white:'#FFFFFF',
+    white2:'#96959a',
     black:'#000000',
     dark1:'#656f84',
 }
@@ -14,6 +15,7 @@ const DARK_THEME={
     textColor1:'#FEFEFE',
     textColor2:'#C1294C',
     white:'#FFFFFF',
+    white2:'#96959a',
     black:'#000000',
     dark1:'#656f84'
 

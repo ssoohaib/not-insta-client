@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { LIGHT_THEME, DARK_THEME } from "../utils/theme";
+import { LIGHT_THEME, DARK_THEME } from "../utils";
 
 const useThemeStore = create((set, get) => ({
     themeTag: 'dark',

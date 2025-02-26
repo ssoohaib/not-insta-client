@@ -19,7 +19,7 @@ const createStyles = (theme) => StyleSheet.create({
   },
   text2:{
     color: theme.textColor2,
-    fontSize:32
+    fontSize:48,
 
   },
 })

@@ -10,8 +10,13 @@ export default function SignIn({schema, setState, onOAuth, onSubmit}) {
     const styles = createStyles(theme);
 
     const handleStateChange=()=>{
-      clearData();
       setState('sign-up');
+    }
+
+    const handleSignIn=async()=>{
+      setSignInState(true);
+      await onSubmit();
+      setSignInState(false);
     }
 
   return (
@@ -28,10 +33,10 @@ export default function SignIn({schema, setState, onOAuth, onSubmit}) {
         <Divider customStyles={{marginBottom:16}} title={'or'} />
         <Form schema={schema} />
         <Button1 
-          title='Sign in' 
+          title='Sign In' 
           customStyles={{backgroundColor:theme.textColor2}} 
           state={signInState} 
-          onPress={onSubmit}
+          onPress={handleSignIn}
         />
         <View style={{alignItems:'center', flexDirection:'row', justifyContent:'center', marginTop:12}}>
             <Paragraph customStyles={{fontSize:12}}>Don't have an account?</Paragraph>

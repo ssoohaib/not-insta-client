@@ -2,10 +2,13 @@ import { View, StyleSheet, ScrollView, Switch, Alert } from 'react-native'
 import React, { use, useEffect, useState } from 'react'
 import { Logo, SignIn, SignUp } from '../../components'
 import useThemeStore from '../../stores/useThemeStore'
+import useUserStore from '../../stores/useUserStore'
 import { emailValidator, passwordValidator } from '../../utils';
+import {signIn, signUp} from '../../apis/authApis/authApis'
 
 export default function AuthScreen() {
   const {theme, toggleTheme}=useThemeStore();
+  const {setUser} = useUserStore();
   const [state, setState]=useState('sign-in');
   const styles = createStyles(theme);
   const [signInData, setSignInData]=useState({
@@ -13,6 +16,7 @@ export default function AuthScreen() {
     password:'',
   });
   const [signUpData, setSignUpData]=useState({
+    name:'',
     email:'',
     password:'',
   });
@@ -36,6 +40,13 @@ export default function AuthScreen() {
 
   const signUpSchema=[
     {
+      type:'text',
+      tag:'Name',
+      placeholder:'Jon Doe',
+      value:signUpData.name,
+      onChangeText:(text)=>setSignUpData({...signUpData, name:text})
+    },
+    {
       type:'email',
       tag:'Email',
       placeholder:'Email',
@@ -51,22 +62,40 @@ export default function AuthScreen() {
     }
   ]
 
-  const handleSignIn=()=>{
+  const handleSignIn=async ()=>{
     const emailError=emailValidator(signInData.email);
     const passwordError=signInData.password.length<8;
     if(!emailError || passwordError){
       Alert.alert('Error', 'Invalid email or password');
       return;
     } 
+
+    signIn(signInData)
+    .then(response => {
+      setSignInData({email:'', password:''})
+      setSignUpData({email:'', password:'', name:''})
+      setUser(response)
+    })
+    .catch(err=>{
+      Alert.alert('Error', err)
+    })
   }
 
   const handleSignUp=()=>{
     const emailError=emailValidator(signUpData.email);
     const passwordError=passwordValidator(signUpData.password);
     if(!emailError || !passwordError){
-      Alert.alert('Error', 'Invalid email or password');
+      Alert.alert('Invalid', 'Email & Name is properly filled,\nPassword is at least 8 characters long,\ncontains 1 digit,\n1 special char,\n1 upper & lower case');
       return;
     }
+
+    signUp(signUpData.email)
+    .then(response=>{
+
+    })
+    .catch(err=>{
+      Alert.alert('Error',err)
+    })
   }
   
   const handleOAuthSignIn=()=>{

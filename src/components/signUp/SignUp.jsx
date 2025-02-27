@@ -13,6 +13,12 @@ export default function Signup({schema, setState, onOAuth, onSubmit}) {
       setState('sign-in');
     }
 
+    const handleSignUp =async ()=>{
+      setSignUpState(true);
+      await onSubmit();
+      setSignUpState(false);
+    }
+
   return (
     <>
         <H1 customStyles={styles.h1}>Sign Up</H1>
@@ -27,10 +33,10 @@ export default function Signup({schema, setState, onOAuth, onSubmit}) {
         <Divider customStyles={{marginBottom:16}} title={'or'} />
         <Form schema={schema} />
         <Button1 
-          title='Sign in' 
+          title='Sign Up' 
           customStyles={{backgroundColor:theme.textColor2}}
           state={signUpState}
-          onPress={onSubmit}
+          onPress={handleSignUp}
         />
         <View style={{alignItems:'center', flexDirection:'row', justifyContent:'center', marginTop:12}}>
             <Paragraph customStyles={{fontSize:12}}>Don't have an account?</Paragraph>

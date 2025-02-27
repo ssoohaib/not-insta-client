@@ -5,5 +5,6 @@ export {
     LIGHT_THEME, 
     DARK_THEME,
     emailValidator,
-    passwordValidator
+    passwordValidator,
+    
 };

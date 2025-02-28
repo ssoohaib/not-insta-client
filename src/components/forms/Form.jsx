@@ -5,11 +5,11 @@ import CustomTextInput from '../customTextInput'
 export default function Form({schema}) {
   return (
     <View>
-        {
-            schema.map((item, index)=>{
-                return <CustomTextInput key={index} {...item} />
-            })
-        }
+      {
+        schema?.map((item, index)=>{
+            return <CustomTextInput key={index} {...item} />
+        })
+      }
     </View>
   )
 }

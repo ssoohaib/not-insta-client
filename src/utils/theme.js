@@ -7,6 +7,7 @@ const LIGHT_THEME={
     white2:'#96959a',
     black:'#000000',
     dark1:'#656f84',
+    red:'#ff0000'
 }
 
 const DARK_THEME={
@@ -17,7 +18,8 @@ const DARK_THEME={
     white:'#FFFFFF',
     white2:'#96959a',
     black:'#000000',
-    dark1:'#656f84'
+    dark1:'#656f84',
+    red:'#ff0000'
 
 }
 

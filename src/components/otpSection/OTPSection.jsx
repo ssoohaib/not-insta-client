@@ -1,12 +1,15 @@
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, Alert } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { H1, Paragraph } from '../appText';
 import { Button1 } from '../buttons';
 import useThemeStore from '../../stores/useThemeStore';
 
-export default function OTPSection({email, verificationState, onSubmit}){
-    const {theme, themeTag}=useThemeStore();
+export default function OTPSection({payload, onSubmit, onOTPResend}){
+    const {email}=payload;
+    const {theme}=useThemeStore();
     const [timer, setTimer] = useState(60);
+    const [isOTPVerified, setIsOTPVerified]=useState(false);
+    const [isOTPResent, setIsOTPResent]=useState(false);
 
     const otpLength = 6;
     const [otp, setOtp] = useState(new Array(otpLength).fill(""));
@@ -18,7 +21,6 @@ export default function OTPSection({email, verificationState, onSubmit}){
         newOtp[index] = value;
         setOtp(newOtp);
 
-        // Move focus to the next input
         if (value && index < otpLength - 1) {
             inputsRef.current[index + 1]?.focus();
         }
@@ -40,8 +42,21 @@ export default function OTPSection({email, verificationState, onSubmit}){
       }
     }, [timer]);
 
-    const handlePress=async()=>{
-      onSubmit()
+    const handleOTPVerification=async()=>{
+      if (otp.join('').length !== otpLength) {
+        Alert.alert('Invalid OTP', 'Please enter a valid OTP', [{ text: 'OK' }])
+        return
+      }
+      setIsOTPVerified(true)
+      await onSubmit(otp)
+      setIsOTPVerified(false)
+    }
+
+    const handleOTPResend=async()=>{
+      setIsOTPResent(true)
+      await onOTPResend()
+      setIsOTPResent(false)
+      setTimer(60)
     }
 
     return (
@@ -85,10 +100,10 @@ export default function OTPSection({email, verificationState, onSubmit}){
         
         <Button1 
           title='Verify' 
-          customStyles={{marginBottom:16, backgroundColor: themeTag ==='dark'? theme.white:theme.black}}
-          titleStyles={{color:themeTag ==='dark'? theme.black:theme.white}}
-          onPress={handlePress}
-          state={verificationState}
+          customStyles={{marginBottom:16, backgroundColor: theme.textColor2}}
+          titleStyles={{color:theme.white}}
+          onPress={handleOTPVerification}
+          state={isOTPVerified}
         />
         <View style={{flexDirection:'row', alignItems:'center'}}>
           <Paragraph customStyles={{color:theme.white2}}>Didn't recieve any code? </Paragraph>
@@ -96,8 +111,8 @@ export default function OTPSection({email, verificationState, onSubmit}){
             title='Resend Code' 
             customStyles={{padding:0, backgroundColor: theme.bgColor1}}
             titleStyles={{color:theme.textColor2}}
-            onPress={handlePress}
-            state={verificationState}
+            onPress={handleOTPResend}
+            state={isOTPResent}
           />
         </View>
       </>

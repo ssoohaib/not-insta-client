@@ -1,9 +1,9 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { Button1, Divider, Form, H1, Paragraph } from '../../components'
 import useThemeStore from '../../stores/useThemeStore';
 
-export default function SignIn({schema, setState, onOAuth, onSubmit}) {
+export default function SignIn({schema, setState, onOAuth, onSubmit, handleForgotPassword}) {
     const {theme, themeTag}=useThemeStore();
     const [oAuthState, setOAuthState]=useState(false);
     const [signInState, setSignInState]=useState(false);
@@ -19,6 +19,10 @@ export default function SignIn({schema, setState, onOAuth, onSubmit}) {
       setSignInState(false);
     }
 
+    const handleForgotPasswordPress=()=>{
+      handleForgotPassword();
+    }
+
   return (
     <>
         <H1 customStyles={styles.h1}>Sign In</H1>
@@ -32,6 +36,11 @@ export default function SignIn({schema, setState, onOAuth, onSubmit}) {
         />
         <Divider customStyles={{marginBottom:16}} title={'or'} />
         <Form schema={schema} />
+        <TouchableOpacity onPress={handleForgotPasswordPress}>
+          <Paragraph customStyles={{color:theme.textColor2, textAlign:'right', marginBottom:16}}>
+            Forgot password?
+          </Paragraph>
+        </TouchableOpacity>
         <Button1 
           title='Sign In' 
           customStyles={{backgroundColor:theme.textColor2}} 

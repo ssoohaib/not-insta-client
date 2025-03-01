@@ -3,17 +3,17 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import useThemeStore from "../../stores/useThemeStore";
 import { Paragraph } from "../appText";
 
-export default function IconButton({title, leftIcon, rightIcon, titleStyles, customStyles}){
+export default function IconButton({onPress, title, leftIcon, rightIcon, titleStyles, customStyles, state=false}){
     const {theme}=useThemeStore();
     const styles=createStyles(theme)
 
     return(
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity onPress={onPress? onPress:()=>{}} style={styles.container} disabled={state}>
             <View style={styles.left}>
-                {leftIcon && <View style={styles.icon1}><AntDesign name={leftIcon.name} size={16} color={leftIcon.color || theme.textColor1} /></View>}
+                {leftIcon && <View style={styles.icon1}><AntDesign name={leftIcon.name} size={leftIcon.size || 16} color={leftIcon.color || theme.textColor1} /></View>}
                 {title && <Paragraph customStyles={[styles.h3, titleStyles && titleStyles]}>{title}</Paragraph>}
             </View>
-            {rightIcon && <View><AntDesign name={rightIcon} size={16} color={theme.textColor1} /></View>}
+            {rightIcon && <View><AntDesign name={rightIcon.name} size={leftIcon.size || 16} color={rightIcon.color || theme.textColor1} /></View>}
         </TouchableOpacity>
     )
 }

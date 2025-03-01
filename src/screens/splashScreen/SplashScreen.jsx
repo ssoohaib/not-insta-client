@@ -4,16 +4,33 @@ import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {Logo} from '../../components';
 import useThemeStore from '../../stores/useThemeStore';
+import { getTokens, removeTokens } from '../../utils';
+import useUserStore from '../../stores/useUserStore';
+import { getUserDetails } from '../../apis/userApis/userApis';
 
 export default function SplashScreen() {
   const navigation = useNavigation();
   const {theme} = useThemeStore();
+  const {setUser} = useUserStore();
 
   useEffect(() => {
-    const initializer = () => {
-      setTimeout(() => {
-        navigation.replace('auth');
-      }, 1000);
+    const initializer = async () => {
+      const {accessToken}=await getTokens()
+
+      if (accessToken){
+        try{
+          const data = await getUserDetails();
+          setUser(data);
+        }catch(e){
+          console.error('Failed to get user details:', e);
+          await removeTokens();
+          navigation.replace('auth');
+        }
+      }else{
+        setTimeout(() => {
+          navigation.replace('auth');
+        }, 1000);
+      }
     };
 
     initializer();

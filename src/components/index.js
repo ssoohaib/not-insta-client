@@ -7,6 +7,7 @@ import CustomTextInput from "./customTextInput/CustomTextInput";
 import SignIn from "./signIn";
 import SignUp from "./signUp";
 import OTPSection from "./otpSection";
+import Header from "./header";
 
 export {
     Logo,
@@ -21,4 +22,5 @@ export {
     SignIn,
     SignUp,
     OTPSection,
+    Header
 }

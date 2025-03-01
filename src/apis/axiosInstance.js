@@ -1,16 +1,16 @@
 import axios from 'axios';
+import { getTokens } from '../utils';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://192.168.0.107:5000',
+  baseURL: 'http://172.20.10.5:5000',
   timeout: 10000,
 });
 
 axiosInstance.interceptors.request.use(
   async config => {
-    // const token = await retrieveTokenSecurely('accessToken');
-    const token = 'moew';
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+    const {accessToken} = await getTokens('accessToken');
+    if (accessToken) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
     return config;
   },

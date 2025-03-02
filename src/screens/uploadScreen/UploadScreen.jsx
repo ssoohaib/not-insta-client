@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, TouchableOpacity, Dimensions, FlatList, Image, RefreshControl, ActivityIndicator } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
 import { Button1, H1, Paragraph } from '../../components';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import useThemeStore from '../../stores/useThemeStore';
@@ -14,38 +13,38 @@ export default function UploadScreen({navigation}) {
     const [refreshing, setRefreshing] = useState(false);
     const [trigger, setTrigger]=useState(false)
 
-    const handleRefresh=()=>{
-        setTrigger(prev=>!prev)
-    }
+    const handleRefresh = useCallback(() => {
+        setTrigger(prev => !prev);
+    }, []);
 
     useEffect(()=>{
-        const fetchMyImages = async () => {
-            setRefreshing(true)
-            try {
-                const images = await getMyImages();
-                setMyImages(images);
-                setRefreshing(false)
-            } catch (error) {
-                setRefreshing(false)
-                console.error("Failed to fetch images:", error);
-            }
-        }
-
         fetchMyImages();
     },[trigger])
 
-    const handleImagePick=async()=>{
+    const fetchMyImages = useCallback(async () => {
+        setRefreshing(true);
+        try {
+            const images = await getMyImages();
+            setMyImages(images);
+            setRefreshing(false);
+        } catch (error) {
+            setRefreshing(false);
+            console.error("Failed to fetch images:", error);
+        }
+    }, []);
+
+    const handleImagePick = useCallback(async () => {
         try {
             const uri = await pickImage();
             navigation.navigate('selected-image', {
-            payload: {
-                uri: uri
-            }
+                payload: {
+                    uri: uri
+                }
             });
         } catch (error) {
             console.error("Failed to pick image:", error);
         }
-    }
+    }, [navigation]);
 
     const renderMyImagesCard=({item})=>{
 

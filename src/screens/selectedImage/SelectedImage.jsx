@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { uploadImage } from '../../apis/userApis/userApis';
 import { H1, Header, InterestsSelector, Paragraph } from '../../components';
 import useThemeStore from '../../stores/useThemeStore';
@@ -14,17 +14,17 @@ export default function SelectedImage({route, navigation}) {
     const [isUploaded, setIsUploaded]=useState(false)
 
     const handleUploadImage = useCallback(async () => {
-        if(selectedCategories.length<3){
+        if(selectedCategories.length < 3){
             Alert.alert('Alert', "Please select at least 3 categories")
             return
         }
         if (!imageUri) return;
 
         setIsUploaded(true)
-        const newUri=await compressImage(imageUri);
+        const newUri = await compressImage(imageUri);
         
         const formData = new FormData();
-            formData.append("image", {
+        formData.append("image", {
             uri: newUri,
             name: `image.jpg`, // Unique filename
             type: "image/jpeg",
@@ -32,15 +32,15 @@ export default function SelectedImage({route, navigation}) {
         formData.append("categories", JSON.stringify(selectedCategories));
 
         try {
-            await uploadImage('/upload-image',formData);
+            await uploadImage('/upload-image', formData);
         } catch (error) {
             console.error('Upload failed: ', error);
         }
         setIsUploaded(false)
         navigation.goBack()
-    })
+    }, [selectedCategories, imageUri, navigation]);
 
-    const styles=createStyles(theme)
+    const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
     <View style={styles.container}>

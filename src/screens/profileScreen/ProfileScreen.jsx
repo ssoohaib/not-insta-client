@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Switch, Image } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import useThemeStore from '../../stores/useThemeStore'
 import { Button2, Divider, H1, H3, Paragraph } from '../../components';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -15,55 +15,52 @@ export default function ProfileScreen({navigation}) {
     const [isEnable, setIsEnable]=useState(true);
     const [imageUri, setImageUri]=useState(user.profile_picture!=='N/A'?user.profile_picture:'N/A')
 
-    const handleSwitch=useCallback(()=>{
+    const handleSwitch = useCallback(() => {
         toggleTheme();
-        setIsEnable(prev=>!prev);
-    })
+        setIsEnable(prev => !prev);
+    }, [toggleTheme]);
 
-    const handleSignOut=async()=>{
+    const handleSignOut = useCallback(async () => {
         await signOut();
         await removeTokens();
         setUser(null);
+    }, [setUser]);
 
-    }
-
-    const handleChangePassword=async()=>{
+    const handleChangePassword = useCallback(async () => {
         navigation.navigate('reset-password-rp', {
-            intent:'reset-password',
-            payload:{
-                email:user.email
+            intent: 'reset-password',
+            payload: {
+                email: user.email
             }
         });
-    }
+    }, [navigation, user.email]);
 
-    const handleChangePreferences=()=>{
-        navigation.navigate('preference-profile',
-            {
-                intent:'profile'
-            }
-        );
-    }
+    const handleChangePreferences = useCallback(() => {
+        navigation.navigate('preference-profile', {
+            intent: 'profile'
+        });
+    }, [navigation]);
 
-    const handleImagePick=async()=>{
+    const handleImagePick = useCallback(async () => {
         try {
             const uri = await pickImage();
-            const newUri=await compressImage(uri);
+            const newUri = await compressImage(uri);
                     
             const formData = new FormData();
-                formData.append("image", {
+            formData.append("image", {
                 uri: newUri,
                 name: `image.jpg`, // Unique filename
                 type: "image/jpeg",
             });
 
-            await uploadImage('/upload-profile-picture',formData);
-            setImageUri(uri)
+            await uploadImage('/upload-profile-picture', formData);
+            setImageUri(uri);
         } catch (error) {
             console.error("Failed to pick image:", error);
         }
-    }
+    }, []);
 
-    const styles=createStyles(theme)
+    const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
     <ScrollView contentContainerStyle={{flex:1, justifyContent:'space-between'}} style={styles.container}>

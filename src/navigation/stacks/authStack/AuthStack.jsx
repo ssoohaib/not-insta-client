@@ -11,10 +11,10 @@ export default function AuthStack() {
     <Stack.Navigator screenOptions={{cardStyle:{backgroundColor:theme.bgColor1}}}>
       <Stack.Screen name="splash" component={SplashScreen} options={{headerShown: false}} />
       <Stack.Screen name="auth" component={AuthScreen} options={{headerShown: false}} />
-      <Stack.Screen name="otp" component={OTPScreen} options={{headerShown: false}} />
-      <Stack.Screen name="preference" component={PrefernceScreen} options={{headerShown: false}} />
       <Stack.Screen name="forgot-password" component={ForgotPassword} options={{headerShown: false}} />
+      <Stack.Screen name="otp" component={OTPScreen} options={{headerShown: false}} />
       <Stack.Screen name="reset-password" component={ResetPassword} options={{headerShown: false}} />
+      <Stack.Screen name="preference" component={PrefernceScreen} options={{headerShown: false}} />
     </Stack.Navigator>
   )
 }

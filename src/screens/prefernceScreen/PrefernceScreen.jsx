@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert, ScrollView, Switch } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { View, StyleSheet, Alert, ScrollView, Switch } from "react-native";
 import useThemeStore from "../../stores/useThemeStore";
 import { Button1, H1, H3, Header, InterestsSelector, Paragraph } from "../../components";
-import { INTERESTS } from '../../utils/constants';
 import { storeInterests, updateInterests } from "../../apis/userApis/userApis";
 import useUserStore from "../../stores/useUserStore";
 
@@ -12,24 +11,21 @@ const InterestScreen = ({ navigation, route }) => {
     const [selectedInterests, setSelectedInterests] = useState([]);
     const [isEnable, setIsEnable] = useState(true);
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const styles = createStyles(theme);
+    
+    const styles = useMemo(()=>{
+        return createStyles(theme)
+    },[theme]) 
 
     useEffect(() => {
         setSelectedInterests(user?.interests || []);
     }, []);
     
-    const handleSwitch = () => {
+    const handleSwitch = useCallback(() => {
         toggleTheme();
         setIsEnable(prev => !prev);
-    };
+    }, []);
 
-    const handleToggleInterest = (id) => {
-        setSelectedInterests(prev => 
-            prev.includes(id) ? prev.filter(interestId => interestId !== id) : [...prev, id]
-        );
-    };
-
-    const handleSubmit = async () => {
+    const handleSubmit = useCallback(async () => {
         if (selectedInterests.length < 3) {
             Alert.alert('Alert', 'Please select at least 3 interests.');
             return;
@@ -43,14 +39,14 @@ const InterestScreen = ({ navigation, route }) => {
             } else {
                 await storeInterests(selectedInterests);
             }
-            const updatedUser = route.params.intent === 'profile' ? { ...user, interests: selectedInterests }:{...route.params.payload, interests: selectedInterests};
+            const updatedUser = route.params.intent === 'profile' ? { ...user, interests: selectedInterests } : { ...route.params.payload, interests: selectedInterests };
             setUser(updatedUser);
             setIsSubmitted(false);
         } catch (error) {
             Alert.alert('Error', 'Failed to store/update interests. Please try again.');
             setIsSubmitted(false);
         }
-    };
+    }, [selectedInterests, route.params.intent, route.params.payload, setUser, user]);
 
     return (
         <ScrollView contentContainerStyle={styles.container}>

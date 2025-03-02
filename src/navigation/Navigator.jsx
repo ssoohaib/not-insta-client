@@ -1,20 +1,39 @@
-import React from 'react'
+import React, { Suspense, lazy, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import {AuthStack} from './stacks';
 import useUserStore from '../stores/useUserStore';
-import AppTabs from './tabs';
-import { View } from 'react-native';
 import useThemeStore from '../stores/useThemeStore';
+import { StyleSheet, View } from 'react-native';
+
+const AuthStack = lazy(() => import('./stacks'));
+const AppTabs = lazy(() => import('./tabs'));
 
 export default function Navigator() {
   const { user } = useUserStore();
-  const {theme}=useThemeStore();
+  const { theme } = useThemeStore();
+
+  const styles = useMemo(()=>{
+    return createStyles(theme)
+  },[theme]) 
 
   return (
     <NavigationContainer>
-      <View style={{flex:1, paddingTop:40, backgroundColor:theme.bgColor1}}>
-        {user ? <AppTabs />:<AuthStack />}
+      <View style={styles.container}>
+        <Suspense fallback={<View style={styles.suspense}></View>}>
+          {user ? <AppTabs /> : <AuthStack />}
+        </Suspense>
       </View>
     </NavigationContainer>
-  )
+  );
 }
+
+const createStyles = (theme) => StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 40,
+    backgroundColor: theme.bgColor1,
+  },
+  suspense:{
+    flex:1,
+    backgroundColor:theme.bgColor1
+  }
+});

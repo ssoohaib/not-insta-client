@@ -11,68 +11,67 @@ export default function AuthScreen({route}) {
   const {intent}=route.params;
   const {theme}=useThemeStore();
   const [isOTPVerified,setIsOTPVerified]=useState(false)
-  const styles = createStyles(theme);
+  
+  const styles = React.useMemo(() => createStyles(theme), [theme]);
 
+  const handleOTPVerification = React.useCallback(async (otp) => {
+    try {
+      setIsOTPVerified(true);
 
-  const handleOTPVerification=async(otp)=>{
-    try{
-      setIsOTPVerified(true)
-
-      if (intent==='reset-password' || intent==='forgot-password') {
-        try{
+      if (intent === 'reset-password' || intent === 'forgot-password') {
+        try {
           await verifyOTPRP({
-            email:route.params.payload.email,
-            otp:otp.join('')
-          })
-          navigation.navigate('reset-password',{
-            intent:'forgot-password',
-            payload:{
-              email:route.params.payload.email
+            email: route.params.payload.email,
+            otp: otp.join('')
+          });
+          navigation.navigate('reset-password', {
+            intent: 'forgot-password',
+            payload: {
+              email: route.params.payload.email
             }
-          })
+          });
+        } catch (e) {
+          setIsOTPVerified(false);
+          Alert.alert('Error', e, [{ text: 'OK' }]);
+          return;
         }
-        catch(e){
-          setIsOTPVerified(false)
-          Alert.alert('Error', e, [{text:'OK'}])
-          return
-        }
-      }else if(intent==='sign-up'){
+      } else if (intent === 'sign-up') {
         await verifyOTP({
           ...route.params.payload,
-          otp:otp.join('')
-        })
+          otp: otp.join('')
+        });
 
-        const data=await signIn({
+        const data = await signIn({
           email,
           password
-        })
-        console.log('>>>>',data)
+        });
+        console.log('>>>>', data);
         navigation.reset({
           index: 0,
-          routes: [{ name: 'preference', params: { intent:'sign-up', payload:{...data} } }]
-        })
+          routes: [{ name: 'preference', params: { intent: 'sign-up', payload: { ...data } } }]
+        });
       }
 
-    }catch(e){
-      setIsOTPVerified(false)
-      Alert.alert('Error', e, [{text:'OK'}])
+    } catch (e) {
+      setIsOTPVerified(false);
+      Alert.alert('Error', e, [{ text: 'OK' }]);
     }
-  }
+  }, []);
 
-  const handleOTPResend=async()=>{
-    try{
+  const handleOTPResend = React.useCallback(async () => {
+    try {
       await resendOTP({
         email
-      })
-      Alert.alert('Success', 'OTP sent successfully', [{text:'OK'}])
-    }catch(e){
-      Alert.alert('Error', e.message, [{text:'OK'}])
+      });
+      Alert.alert('Success', 'OTP sent successfully', [{ text: 'OK' }]);
+    } catch (e) {
+      Alert.alert('Error', e.message, [{ text: 'OK' }]);
     }
-  }
+  }, [email]);
   
   return (
     <View style={styles.container}>
-      <Header />
+      <Header onPress={()=>navigation.goBack()} />
         <OTPSection 
           payload={{email,name,password}} 
           verificationState={isOTPVerified} 

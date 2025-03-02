@@ -7,7 +7,7 @@ export default function Header({onPress}){
     const {theme}=useThemeStore();
     return(
       <View style={{marginBottom:32}}>
-        <TouchableOpacity onPress={onPress ? onPress:()=>{}}>
+        <TouchableOpacity onPress={onPress ? onPress:()=>{console.log('wow')}}>
           <AntDesign name="left" size={24} color={theme.textColor1} />
         </TouchableOpacity>
       </View>

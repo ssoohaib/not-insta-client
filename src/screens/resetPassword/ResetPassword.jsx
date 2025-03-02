@@ -13,20 +13,20 @@ export default function ResetPassword({route, navigation}) {
     const [password1, setPassword1]=useState('');
     const [password2, setPassword2]=useState('');
 
-    const schema=[
+    const schema = [
         {
-            type:'password',
-            tag:'New Password',
-            placeholder:'',
-            value:password1,
-            onChangeText:setPassword1
+            type: 'password',
+            tag: 'New Password',
+            placeholder: '',
+            value: password1,
+            onChangeText: setPassword1
         },
         {
-            type:'password',
-            tag:'Confirm Password',
-            placeholder:'',
-            value:password2,
-            onChangeText:setPassword2
+            type: 'password',
+            tag: 'Confirm Password',
+            placeholder: '',
+            value: password2,
+            onChangeText: setPassword2
         }
     ]
 
@@ -40,22 +40,22 @@ export default function ResetPassword({route, navigation}) {
         });
     }
 
-    const handleSubmit=async()=>{
-        if (route.params.intent==='reset-password' && currentPassword.length<8) {
+    const handleSubmit = React.useCallback(async () => {
+        if (route.params.intent === 'reset-password' && currentPassword.length < 8) {
             Alert.alert('Alert', 'Please enter a valid current password');
             return;
         }
-        const isPass1=passwordValidator(password1);
-        if(!isPass1){
+        const isPass1 = passwordValidator(password1);
+        if (!isPass1) {
             Alert.alert('Alert', 'Please enter a valid new password');
             return;
         }
-        const isMatch=password1===password2;
+        const isMatch = password1 === password2;
         if (!isMatch) {
             Alert.alert('Alert', 'Passwords do not match');
             return;
         }
-        if(currentPassword===password1){
+        if (currentPassword === password1) {
             Alert.alert('Alert', 'New password cannot be same as old password');
             return;
         }
@@ -63,26 +63,26 @@ export default function ResetPassword({route, navigation}) {
         setIsChanged(true);
         try {
             await setNewPassword({
-                intent:route.params.intent,
-                payload:{
-                    email:route.params.payload.email,
-                    newPassword:password1,
-                    oldPassword:route.params.intent==='reset-password'?currentPassword:null
+                intent: route.params.intent,
+                payload: {
+                    email: route.params.payload.email,
+                    newPassword: password1,
+                    oldPassword: route.params.intent === 'reset-password' ? currentPassword : null
                 }
             });
-            if (route.params.intent==='forgot-password') {
+            if (route.params.intent === 'forgot-password') {
                 navigation.reset({
-                    index:0,
-                    routes:[{name:'auth'}]
+                    index: 0,
+                    routes: [{ name: 'auth' }]
                 });
-            }else if(route.params.intent==='reset-password'){
+            } else if (route.params.intent === 'reset-password') {
                 navigation.goBack();
             }
         } catch (error) {
             setIsChanged(false);
             Alert.alert('Error', error);
         }
-    }
+    }, [route.params, currentPassword, password1, password2, navigation]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

@@ -3,8 +3,8 @@ import HomeStack from "./homeStack";
 import ProfileStack from "./profileStack";
 import UploadStack from "./uploadStack";
 
+export default AuthStack;
 export {
-    AuthStack,
     HomeStack,
     ProfileStack,
     UploadStack

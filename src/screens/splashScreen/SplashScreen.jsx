@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {Logo} from '../../components';
@@ -14,29 +14,31 @@ export default function SplashScreen() {
   const {setUser} = useUserStore();
 
   useEffect(() => {
-    const initializer = async () => {
-      const {accessToken}=await getTokens()
-
-      if (accessToken){
-        try{
-          const data = await getUserDetails();
-          setUser(data);
-        }catch(e){
-          console.error('Failed to get user details:', e);
-          await removeTokens();
-          navigation.replace('auth');
-        }
-      }else{
-        setTimeout(() => {
-          navigation.replace('auth');
-        }, 1000);
-      }
-    };
-
     initializer();
   }, []);
 
-  const styles = createStyles(theme);
+  const initializer = useCallback(async () => {
+    const {accessToken} = await getTokens();
+
+    if (accessToken) {
+      try {
+        const data = await getUserDetails();
+        setUser(data);
+      } catch (e) {
+        console.error('Failed to get user details:', e);
+        await removeTokens();
+        navigation.replace('auth');
+      }
+    } else {
+      setTimeout(() => {
+        navigation.replace('auth');
+      }, 1000);
+    }
+  }, [navigation, setUser]);
+
+  const styles = useMemo(()=>{
+    return createStyles(theme)
+  },[theme]) 
 
   return (
     <View style={styles.container}>

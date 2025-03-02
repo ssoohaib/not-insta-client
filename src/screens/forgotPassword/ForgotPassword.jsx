@@ -10,11 +10,10 @@ export default function ForgotPassword({navigation}) {
     const [email, setEmail]=useState('');
     const [isSent, setIsSent]=useState(false);
 
-    const styles=createStyles(theme)
+    const styles = React.useMemo(() => createStyles(theme), [theme]);
 
-    const handleSubmit=async()=>{
+    const handleSubmit = React.useCallback(async () => {
         const isEmail = emailValidator(email);
-        console.log('>>>>', isEmail)
         if (!isEmail) {
             Alert.alert('Alert', 'Please enter your email');
             return;
@@ -22,25 +21,25 @@ export default function ForgotPassword({navigation}) {
 
         setIsSent(true);
         try {
-            await resendOTP({email});
+            await resendOTP({ email });
             setIsSent(false);
-            navigation.navigate('otp', {payload:{email}, intent:'forgot-password'});
+            navigation.navigate('otp', { payload: { email }, intent: 'forgot-password' });
         } catch (error) {
             setIsSent(false);
             Alert.alert('Alert', error);
             console.error('Error resending OTP:', error);
         }
-    }
+    }, [email, navigation]);
 
-    const schema=[
+    const schema = React.useMemo(() => [
         {
-            type:'email',
-            tag:'Email',
-            placeholder:'Enter your email',
-            value:email,
-            onChangeText:setEmail
+            type: 'email',
+            tag: 'Email',
+            placeholder: 'Enter your email',
+            value: email,
+            onChangeText: setEmail
         }
-    ]
+    ], [email]);
   return (
     <ScrollView contentContainerStyle={styles.container}>
         <Header onPress={()=>{navigation.goBack()}} />

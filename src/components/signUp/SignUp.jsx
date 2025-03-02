@@ -30,7 +30,9 @@ export default function Signup({schema, setState, onOAuth, onSubmit}) {
             onPress={onOAuth}
             state={oAuthState}
         />
-        <Divider customStyles={{marginBottom:16}} title={'or'} />
+        <View style={{marginBottom:8}}>
+          <Divider title={'or'} />
+         </View>
         <Form schema={schema} />
         <Button1 
           title='Sign Up' 

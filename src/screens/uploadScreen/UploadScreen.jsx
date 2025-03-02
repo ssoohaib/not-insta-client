@@ -5,6 +5,7 @@ import { Button1, H1, Paragraph } from '../../components';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import useThemeStore from '../../stores/useThemeStore';
 import { getMyImages } from '../../apis/userApis/userApis';
+import { pickImage } from '../../utils';
 const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
 
 export default function UploadScreen({navigation}) {
@@ -33,29 +34,18 @@ export default function UploadScreen({navigation}) {
         fetchMyImages();
     },[trigger])
 
-    const pickImage = async () => {
-        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-        if (permissionResult.granted === false) {
-            alert("Permission to access camera roll is required!");
-            return;
+    const handleImagePick=async()=>{
+        try {
+            const uri = await pickImage();
+            navigation.navigate('selected-image', {
+            payload: {
+                uri: uri
+            }
+            });
+        } catch (error) {
+            console.error("Failed to pick image:", error);
         }
-
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-
-        if (!result.cancelled) {
-            navigation.navigate('selected-image',{
-                payload:{
-                    uri:result.assets[0].uri
-                }
-            })
-        }
-    };
+    }
 
     const renderMyImagesCard=({item})=>{
 
@@ -68,7 +58,7 @@ export default function UploadScreen({navigation}) {
             <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginBottom:16}}>
                 <H1>Share an image</H1>
             </View>
-            <TouchableOpacity onPress={pickImage} style={{borderWidth:2, borderColor:theme.bgColor2, borderRadius:16, paddingVertical:24, alignItems:'center', justifyContent:'center', marginBottom:32}}>
+            <TouchableOpacity onPress={handleImagePick} style={{borderWidth:2, borderColor:theme.bgColor2, borderRadius:16, paddingVertical:24, alignItems:'center', justifyContent:'center', marginBottom:32}}>
                 <AntDesign name="pluscircleo" size={40} color={theme.white2} />
                 <Paragraph customStyles={{marginTop:16, fontWeight:'bold', color:theme.white2}}>Upload</Paragraph>
             </TouchableOpacity>    

@@ -33,10 +33,10 @@ export const updateInterests = async (payload) => {
     }
 }
 
-export const uploadImage = async (formData) => {
+export const uploadImage = async (route, formData) => {
     console.log(formData)
     try {
-        const response = await axiosInstance.post('/upload-image', formData, {
+        const response = await axiosInstance.post(route, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

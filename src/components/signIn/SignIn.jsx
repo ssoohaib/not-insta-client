@@ -34,7 +34,9 @@ export default function SignIn({schema, setState, onOAuth, onSubmit, handleForgo
             onPress={onOAuth}
             state={oAuthState}
         />
-        <Divider customStyles={{marginBottom:16}} title={'or'} />
+        <View style={{marginBottom:8}}>
+        <Divider title={'or'} />
+        </View>
         <Form schema={schema} />
         <TouchableOpacity onPress={handleForgotPasswordPress}>
           <Paragraph customStyles={{color:theme.textColor2, textAlign:'right', marginBottom:16}}>

@@ -3,6 +3,7 @@ import { emailValidator, passwordValidator } from "./validators";
 import { saveTokens, getTokens, removeTokens } from "./storeTokens";
 import { INTERESTS } from "./constants";
 import { compressImage } from "./helpers";
+import { pickImage } from "./imageHelper";
 
 export { 
     LIGHT_THEME, 
@@ -13,6 +14,7 @@ export {
     getTokens,
     removeTokens,
     INTERESTS,
-    compressImage
+    compressImage,
+    pickImage
     
 };

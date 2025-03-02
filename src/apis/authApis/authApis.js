@@ -76,3 +76,15 @@ export const setNewPassword = async (payload) => {
         throw error?.response?.data?.message;
     }
 }
+
+// signout
+export const signOut = async () => {
+    try {
+        await axiosInstance.post('/signout');
+        console.log('[OK] => SignOut');
+        return;
+    } catch (error) {
+        console.error('[FAIL] => SignOut', error.response.data);
+        throw error?.response?.data?.message;
+    }
+}

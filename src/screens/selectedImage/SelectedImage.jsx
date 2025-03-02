@@ -32,7 +32,7 @@ export default function SelectedImage({route, navigation}) {
         formData.append("categories", JSON.stringify(selectedCategories));
 
         try {
-            await uploadImage(formData);
+            await uploadImage('/upload-image',formData);
         } catch (error) {
             console.error('Upload failed: ', error);
         }

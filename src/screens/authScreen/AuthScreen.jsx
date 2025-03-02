@@ -113,11 +113,11 @@ export default function AuthScreen({ navigation }) {
   }, [navigation]);
 
   const handleOAuthSignIn = useCallback(() => {
-
+    Alert.alert("Apologies 🙏", "Enabling OAuth requires ejecting from Expo managed environment 😱😱, and since i dont own a physical android 😔😔, development became a nightmare when i started an emulator on my 🥔🥔windows.\n\nOther than this everything is an A+ Grade 😎😎")
   }, []);
 
   const handleOAuthSignUp = useCallback(() => {
-
+    Alert.alert("Apologies 🙏", "Enabling OAuth requires ejecting from Expo managed environment 😱😱, and since i dont own a physical android 😔😔, development became a nightmare when i started an emulator on my 🥔🥔windows.\n\nOther than this everything is an A+ Grade 😎😎")
   }, []);
 
   return (

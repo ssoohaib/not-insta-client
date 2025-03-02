@@ -2,7 +2,7 @@ import React, { Suspense, lazy, useMemo } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import useUserStore from '../stores/useUserStore';
 import useThemeStore from '../stores/useThemeStore';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 const AuthStack = lazy(() => import('./stacks'));
 const AppTabs = lazy(() => import('./tabs'));
@@ -29,7 +29,7 @@ export default function Navigator() {
 const createStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
+    paddingTop: Platform.OS=='ios' ? 40:24,
     backgroundColor: theme.bgColor1,
   },
   suspense:{

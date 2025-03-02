@@ -6,6 +6,8 @@ import PrefernceScreen from "./prefernceScreen";
 import HomeScreen from "./homeScreen";
 import ForgotPassword from "./forgotPassword";
 import ResetPassword from "./resetPassword";
+import UploadScreen from "./uploadScreen";
+import SelectedImage from "./selectedImage";
 
 export {
     SplashScreen,
@@ -15,5 +17,7 @@ export {
     PrefernceScreen,
     HomeScreen,
     ForgotPassword,
-    ResetPassword
+    ResetPassword,
+    UploadScreen,
+    SelectedImage
 };

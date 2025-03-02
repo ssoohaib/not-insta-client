@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert, ScrollView, Switch } from "react-native";
 import useThemeStore from "../../stores/useThemeStore";
-import { Button1, H1, H3, Header, Paragraph } from "../../components";
+import { Button1, H1, H3, Header, InterestsSelector, Paragraph } from "../../components";
 import { INTERESTS } from '../../utils/constants';
 import { storeInterests, updateInterests } from "../../apis/userApis/userApis";
 import useUserStore from "../../stores/useUserStore";
@@ -72,23 +72,7 @@ const InterestScreen = ({ navigation, route }) => {
 
                 <H1 customStyles={{ marginBottom: 16 }}>Tell us your interests</H1>
                 <Paragraph customStyles={{ color: theme.white2, marginBottom: 16 }}>Choose at least 3 interests, and we'll curate the best events for your.</Paragraph>
-
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                    {INTERESTS.map((item) => {
-                        const isSelected = selectedInterests.includes(item.id);
-                        return (
-                            <TouchableOpacity
-                                key={item.id}
-                                style={[styles.interest, isSelected && styles.selectedInterest]}
-                                onPress={() => handleToggleInterest(item.id)}
-                            >
-                                <Paragraph>
-                                    {item.icon} {item.name}
-                                </Paragraph>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </View>
+                <InterestsSelector selected={selectedInterests} setSelected={setSelectedInterests} />
             </View>
 
             <Button1

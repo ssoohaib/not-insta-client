@@ -32,3 +32,54 @@ export const updateInterests = async (payload) => {
         throw error;
     }
 }
+
+export const uploadImage = async (formData) => {
+    console.log(formData)
+    try {
+        const response = await axiosInstance.post('/upload-image', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log('[OK] => Uploading image:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error uploading image:', error.response.data);
+        throw error;
+    }
+}
+
+export const getMyImages = async () => {
+    try {
+        const response = await axiosInstance.get('/get-my-images');
+        console.log('[OK] => Fetching my images');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching my images:', error);
+        throw error;
+    }
+}
+
+// not-mine
+export const getImages = async () => { 
+    try {
+        const response = await axiosInstance.get('/get-images');
+        console.log('[OK] => Fetching images:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching images:', error);
+        throw error;
+    }
+}
+
+export const getImagesByCategory = async (interestIds) => {
+    console.log(interestIds)
+    try {
+        const response = await axiosInstance.post('/get-images-by-category',  {interestIds} );
+        console.log('[OK] => Fetching images by category');
+        return response?.data;
+    } catch (error) {
+        console.error('Error fetching images by category:', error);
+        throw error;
+    }
+}

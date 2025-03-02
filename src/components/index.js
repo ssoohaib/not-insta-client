@@ -8,6 +8,9 @@ import SignIn from "./signIn";
 import SignUp from "./signUp";
 import OTPSection from "./otpSection";
 import Header from "./header";
+import InterestsSelector from "./interestsSelector";
+import FeedImageCard from "./feedImageCard";
+import CategoryItem from "./categoryItem";
 
 export {
     Logo,
@@ -22,5 +25,8 @@ export {
     SignIn,
     SignUp,
     OTPSection,
-    Header
+    Header,
+    InterestsSelector,
+    FeedImageCard,
+    CategoryItem
 }

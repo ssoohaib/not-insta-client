@@ -2,6 +2,7 @@ import { LIGHT_THEME, DARK_THEME } from "./theme";
 import { emailValidator, passwordValidator } from "./validators";
 import { saveTokens, getTokens, removeTokens } from "./storeTokens";
 import { INTERESTS } from "./constants";
+import { compressImage } from "./helpers";
 
 export { 
     LIGHT_THEME, 
@@ -11,6 +12,7 @@ export {
     saveTokens,
     getTokens,
     removeTokens,
-    INTERESTS
+    INTERESTS,
+    compressImage
     
 };

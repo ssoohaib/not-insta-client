@@ -1,13 +1,15 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeStack, ProfileStack } from '../stacks';
+import { HomeStack, ProfileStack, UploadStack } from '../stacks';
 import useThemeStore from '../../stores/useThemeStore';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import useUserStore from '../../stores/useUserStore';
 
 const Tab = createBottomTabNavigator();
 
 export default function AppTabs() {
     const {theme}=useThemeStore();
+    const {user}=useUserStore();
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -23,16 +25,18 @@ export default function AppTabs() {
 
                     if (route.name === 'Home') {
                         iconName = 'home';
-                    } else if (route.name === 'Profile') {
+                    } else if(route.name === 'Upload') {
+                        iconName = 'pluscircleo'
+                    }else if (route.name === user.name || route.name === 'Profile') {
                         iconName = 'user';
                     }
-
                     return <AntDesign name={iconName} size={20} color={color} />;
                 },
             })}
         >
             <Tab.Screen name="Home" component={HomeStack} />
-            <Tab.Screen name="Profile" component={ProfileStack} />
+            <Tab.Screen name="Upload" component={UploadStack} />
+            <Tab.Screen name={user.name? user.name:"Profile"} component={ProfileStack} />
         </Tab.Navigator>
     );
 }

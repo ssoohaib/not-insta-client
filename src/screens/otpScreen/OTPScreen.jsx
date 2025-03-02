@@ -87,7 +87,8 @@ const createStyles = (theme) => StyleSheet.create({
   container:{
     flex:1,
     backgroundColor:theme.bgColor1,
-    padding:24
+    padding:24,
+    paddingTop:0
     
   },
 })

@@ -41,8 +41,8 @@ export const uploadImage = async (route, formData) => {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        console.log('[OK] => Uploading image:', response.data);
-        return response.data;
+        console.log('[OK] => Uploading image');
+        return
     } catch (error) {
         console.error('Error uploading image:', error.response.data);
         throw error;

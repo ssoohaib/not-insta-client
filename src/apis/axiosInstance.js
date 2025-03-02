@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getTokens } from '../utils';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://172.20.10.5:5000',
+  baseURL: process.env.EXPO_PUBLIC_BASE_URL,
   timeout: 10000,
 });
 

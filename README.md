@@ -13,7 +13,7 @@ Install not-insta-client with npm
 ```
 
 ## Run
-
+Project is Expo Managed so install Expo Go app and scan the QR code after running the following command.
 
 ```bash
   npx expo start

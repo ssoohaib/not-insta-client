@@ -21,9 +21,9 @@ Project is Expo Managed so install Expo Go app and scan the QR code after runnin
 ## .env
 
 not-insta-server's production branch is connected to Railway and the server can be accessed with the following url (put it in your .env)
+<br />
 https://not-insta-server-production.up.railway.app/
 
-Server public url,
 ```bash
 EXPO_PUBLIC_BASE_URL=
 ```
